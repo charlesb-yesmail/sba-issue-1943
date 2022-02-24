@@ -1,0 +1,31 @@
+logging:
+  level:
+    ROOT: INFO
+management:
+  endpoints:
+    health:
+      show-components: always
+      show-details: always
+    web:
+      exposure:
+        include: '*'
+  security:
+    enabled: true
+server:
+  error:
+    include-exception: true
+    path: /error
+    whitelabel:
+      enabled: false
+  servlet:
+    context-path: /webapp1
+  port: 8081
+spring:
+  application:
+    name: Web App One
+  mvc:
+    log-request-details: false
+    static-path-pattern: /static
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false

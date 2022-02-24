@@ -1,0 +1,19 @@
+logging:
+  level:
+    ROOT: info
+management:
+  endpoints:
+    health:
+      show-components: always
+      show-details: always
+    web:
+      exposure:
+        include: '*'
+  security:
+    enabled: true
+  trace:
+    http:
+      enabled: true
+spring:
+  application:
+    name: Standalone Application

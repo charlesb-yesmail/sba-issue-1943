@@ -1,0 +1,22 @@
+logging:
+  level:
+    ROOT: INFO
+management:
+  endpoint:
+    health:
+      show-components: always
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+server:
+  servlet:
+    context-path: /webapp2
+  error:
+    include-exception: true
+  whitelabel:
+    enabled: true
+spring:
+  application:
+    name: Web App Two
