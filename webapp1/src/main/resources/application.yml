@@ -1,3 +1,5 @@
+app:
+  tomcat-base: http://localhost:8081
 logging:
   level:
     ROOT: INFO
@@ -23,6 +25,11 @@ server:
 spring:
   application:
     name: Web App One
+  boot:
+    admin:
+      client:
+        instance:
+          service-url: ${app.tomcat-base}${server.servlet.context-path}
   mvc:
     log-request-details: false
     static-path-pattern: /static

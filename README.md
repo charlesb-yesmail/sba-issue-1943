@@ -100,3 +100,36 @@ description.
 I think the issue is related to the use of Tomcat vhosts.  When I first set up this demo project I did not configure the
 Tomcat vhosts and I did not observe the behaviour.  When I subsequently added the additional vhost configuration then the
 behaviour started.
+
+# How to Fix
+
+According to the team at Codecentric, the fix is to provide a specific value for ```spring.boot.admin.client.instance.service-base-url```
+for each application.  To achieve this I modified the configuration as follows:
+
+## Tomcat
+
+Modify ```setenv.sh``` to remove setting of ```SPRING_BOOT_ADMIN_CLIENT_INSTANCE_SERVICEBASEURL```:
+Add a new environment variable:
+```shell
+export TOMCAT_BASE="http://localhost:8081"
+```
+Modify setting of ```CATALINA_OPTS``` to remove setting of ```spring.boot.admin.client.instance.service-base-url``` and
+replace with custom property ```app.tomcat-base```:
+```shell
+export CATALINA_OPTS="$CATALINA_OPTS -Dspring.boot.admin.client.username=$SPRING_SECURITY_USER_NAME -Dspring.boot.admin.client.password=$SPRING_SECURITY_USER_PASSWORD -Dspring.boot.admin.client.instance.metadata.user.name=$SPRING_SECURITY_USER_NAME -Dspring.boot.admin.client.instance.metadata.user.password=$SPRING_SECURITY_USER_PASSWORD -Dspring.boot.admin.username=$SB_ADMIN_USER -Dspring.boot.admin.password=$SB_ADMIN_PASSWORD -Dmanagement.endpoint.health.roles=ACTUATOR -Dspring.boot.admin.client.url=http://localhost:9060 -Dapp.tomcat-base=$TOMCAT_BASE"
+```
+
+## Web Apps
+
+In each application's ```application.yml``` add the following:
+
+```yaml
+app:
+  tomcat-base: http://localhost:8081
+spring:
+  boot:
+    admin:
+      client:
+        instance:
+          service-url: ${app.tomcat-base}${server.servlet.context-path}
+```
